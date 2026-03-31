@@ -29,3 +29,14 @@
 
 en:
   hello: "Hello world"
+  date:
+    formats:
+      default: "%b %e, %Y"
+  number:
+    currency:
+      format:
+        format: "%u%n"
+        unit: "₹"
+        separator: "."
+        delimiter: ","
+        precision: 2

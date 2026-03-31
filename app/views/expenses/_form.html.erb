@@ -1,0 +1,44 @@
+<%= form_with model: expense do |f| %>
+  <% if expense.errors.any? %>
+    <div role="alert">
+      <ul>
+        <% expense.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name, required: true, autocomplete: "off" %>
+  </p>
+
+  <p>
+    <%= f.label :description %>
+    <%= f.text_area :description, rows: 3 %>
+  </p>
+
+  <p>
+    <%= f.label :amount %>
+    <%= f.number_field :amount, step: "0.01", min: "0.01", required: true %>
+  </p>
+
+  <p>
+    <%= f.label :spent_on %>
+    <%= f.date_field :spent_on, required: true %>
+  </p>
+
+  <p>
+    <%= f.label :filter_id, "Filter" %>
+    <%= f.collection_select :filter_id, current_user.filters.order(:name), :id, :name,
+          { include_blank: "None" }, {} %>
+    <small>Optional. <%= link_to "Manage filters", filters_path %>.</small>
+  </p>
+
+  <p>
+    <%= f.submit %>
+    <% ref = expense.spent_on || Time.zone.today %>
+    <%= link_to "Cancel", expenses_path(year: ref.year, month: ref.month) %>
+  </p>
+<% end %>

@@ -1,0 +1,18 @@
+Hi,
+
+Here is your Ezpense summary for <%= Date::MONTHNAMES[@month] %> <%= @year %>.
+
+Period covered: <%= @period_description %>
+
+Total: <%= number_to_currency(@grand_total) %>
+
+<% if @totals_by_filter.any? %>
+By filter:
+<% @totals_by_filter.sort_by { |name, _| name }.each do |label, amount| %>
+- <%= label %>: <%= number_to_currency(amount) %>
+<% end %>
+<% end %>
+
+A detailed PDF is attached to this email.
+
+— Ezpense

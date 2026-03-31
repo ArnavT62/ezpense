@@ -1,4 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  helper ApplicationHelper
+
+  default from: -> { ENV["GOOGLE_SMTP_USER"].presence || "Ezpense <noreply@localhost>" }
   layout "mailer"
 end

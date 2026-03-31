@@ -1,0 +1,24 @@
+<% content_for :title, "Rename filter" %>
+
+<h1>Rename filter</h1>
+<p><%= link_to "Back to filters", filters_path %></p>
+
+<%= form_with model: @filter do |f| %>
+  <% if @filter.errors.any? %>
+    <div role="alert">
+      <ul>
+        <% @filter.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name, required: true, autocomplete: "off" %>
+  </p>
+  <p>
+    <%= f.submit "Save" %>
+    <%= link_to "Cancel", filters_path %>
+  </p>
+<% end %>

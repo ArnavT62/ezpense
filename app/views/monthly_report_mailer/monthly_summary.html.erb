@@ -1,0 +1,20 @@
+<p>Hi,</p>
+
+<p>Here is your Ezpense summary for <strong><%= Date::MONTHNAMES[@month] %> <%= @year %></strong>.</p>
+
+<p>Period covered: <strong><%= @period_description %></strong></p>
+
+<p><strong>Total:</strong> <%= number_to_currency(@grand_total) %></p>
+
+<% if @totals_by_filter.any? %>
+  <p><strong>By filter:</strong></p>
+  <ul>
+    <% @totals_by_filter.sort_by { |name, _| name }.each do |label, amount| %>
+      <li><%= label %>: <%= number_to_currency(amount) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<p>A detailed PDF is attached to this email.</p>
+
+<p>— Ezpense</p>

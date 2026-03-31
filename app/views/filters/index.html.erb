@@ -1,0 +1,38 @@
+<% content_for :title, "Filters" %>
+
+<h1>Filters</h1>
+<p><%= link_to "Back to expenses", root_path %></p>
+
+<h2>Add filter</h2>
+<%= form_with model: @filter, url: filters_path do |f| %>
+  <% if @filter.errors.any? %>
+    <div role="alert">
+      <ul>
+        <% @filter.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name, placeholder: "e.g. Food, Shopping", required: true, autocomplete: "off" %>
+    <%= f.submit "Add filter" %>
+  </p>
+<% end %>
+
+<h2>Your filters</h2>
+<% if @filters.any? %>
+  <ul>
+    <% @filters.each do |filter| %>
+      <li>
+        <%= filter.name %>
+        <%= link_to "Rename", edit_filter_path(filter) %>
+        <%= button_to "Delete", filter_path(filter), method: :delete,
+              form: { data: { turbo_confirm: "Delete this filter? Expenses using it become uncategorized." } } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No filters yet. Add one above to tag expenses.</p>
+<% end %>

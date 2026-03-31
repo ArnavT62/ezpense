@@ -11,19 +11,34 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <% if user_signed_in? %>
+      <header>
+        <p>
+          <%= link_to "Ezpense", root_path %> —
+          <%= link_to "Expenses", root_path %> —
+          <%= link_to "Filters", filters_path %>
+        </p>
+        <p>
+          <%= current_user.email %>
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+        </p>
+      </header>
+    <% end %>
+
+    <main>
+      <% flash.each do |type, msg| %>
+        <div role="<%= type == "alert" ? "alert" : "status" %>"><%= msg %></div>
+      <% end %>
+      <%= yield %>
+    </main>
   </body>
 </html>

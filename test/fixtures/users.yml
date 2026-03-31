@@ -1,0 +1,10 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# Password for both fixtures: password123 (bcrypt cost 4)
+
+one:
+  email: user1@example.com
+  encrypted_password: "$2a$04$ru76c/ITwXdVdlm1e3D.5uIc5nA7fN8y5GF.wymHBXiBanzlBRXUS"
+
+two:
+  email: user2@example.com
+  encrypted_password: "$2a$04$ru76c/ITwXdVdlm1e3D.5uIc5nA7fN8y5GF.wymHBXiBanzlBRXUS"
