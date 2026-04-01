@@ -59,7 +59,7 @@ class MonthlyReportMailer < ApplicationMailer
     attachments["ezpense-month-to-date-#{year}-#{month.to_s.rjust(2, '0')}.pdf"] = pdf
 
     mail to: user.email,
-      subject: "Ezpense — #{Date::MONTHNAMES[month]} #{year} (month to date)",
+      subject: "EZpense — #{Date::MONTHNAMES[month]} #{year}",
       template_name: "monthly_summary"
   end
 

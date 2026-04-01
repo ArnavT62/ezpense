@@ -1,44 +1,65 @@
-<%= form_with model: expense do |f| %>
-  <% if expense.errors.any? %>
-    <div role="alert">
-      <ul>
-        <% expense.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<% input_class = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+<% label_class = "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+<% select_class = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+<% textarea_class = "block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+<% link_class = "text-sm font-medium text-primary-600 dark:text-primary-500 hover:underline" %>
+<% ref = expense.spent_on || Time.zone.today %>
+<% cancel_path = expenses_path(year: ref.year, month: ref.month) %>
+<% spent_on_min = Date.new(Expense::MIN_SELECTABLE_YEAR, 1, 1) %>
+<% spent_on_max = Time.zone.today.end_of_month %>
 
-  <p>
-    <%= f.label :name %>
-    <%= f.text_field :name, required: true, autocomplete: "off" %>
-  </p>
+<section class="w-full max-w-2xl rounded-lg shadow-sm">
+  <div class="mx-auto max-w-2xl">
+    <%= form_with model: expense do |f| %>
+      <% if expense.errors.any? %>
+        <div
+          class="p-4 mb-6 text-sm rounded-lg border text-fg-danger border-danger-subtle bg-danger-soft"
+          role="alert">
+          <h2 class="font-semibold mb-2 text-heading">Please fix the following:</h2>
+          <ul class="list-disc list-inside space-y-1 text-body">
+            <% expense.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <p>
-    <%= f.label :description %>
-    <%= f.text_area :description, rows: 3 %>
-  </p>
+      <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+        <div class="sm:col-span-2">
+          <%= f.label :name, class: label_class %>
+          <%= f.text_field :name, required: true, autocomplete: "off", class: input_class, placeholder: "e.g. Groceries" %>
+        </div>
 
-  <p>
-    <%= f.label :amount %>
-    <%= f.number_field :amount, step: "0.01", min: "0.01", required: true %>
-  </p>
+        <div class="sm:col-span-2">
+          <%= f.label :description, class: label_class %>
+          <%= f.text_area :description, rows: 6, class: textarea_class, placeholder: "Optional notes" %>
+        </div>
 
-  <p>
-    <%= f.label :spent_on %>
-    <%= f.date_field :spent_on, required: true %>
-  </p>
+        <div class="w-full">
+          <%= f.label :amount, class: label_class %>
+          <%= f.number_field :amount, step: "0.01", min: "0.01", required: true, class: input_class, placeholder: "0.00" %>
+        </div>
 
-  <p>
-    <%= f.label :filter_id, "Filter" %>
-    <%= f.collection_select :filter_id, current_user.filters.order(:name), :id, :name,
-          { include_blank: "None" }, {} %>
-    <small>Optional. <%= link_to "Manage filters", filters_path %>.</small>
-  </p>
+        <div class="w-full">
+          <%= f.label :spent_on, class: label_class %>
+          <%= f.date_field :spent_on, required: true, class: input_class, min: spent_on_min, max: spent_on_max %>
+        </div>
 
-  <p>
-    <%= f.submit %>
-    <% ref = expense.spent_on || Time.zone.today %>
-    <%= link_to "Cancel", expenses_path(year: ref.year, month: ref.month) %>
-  </p>
-<% end %>
+        <div class="sm:col-span-2">
+          <%= f.label :filter_id, "Filter", class: label_class %>
+          <%= f.collection_select :filter_id, current_user.filters.order(:name), :id, :name,
+                { include_blank: "None" },
+                { class: select_class } %>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Optional. <%= link_to "Manage filters", filters_path, class: link_class %>.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 mt-4 sm:mt-6">
+        <%= f.submit class: "text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full sm:w-auto justify-center cursor-pointer" %>
+        <%= link_to "Cancel", cancel_path, class: link_class %>
+      </div>
+    <% end %>
+  </div>
+</section>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" class="dark">
   <head>
     <title><%= content_for(:title) || "Ezpense" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Ezpense">
     <meta name="mobile-web-app-capable" content="yes">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -14,33 +15,86 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js" defer></script>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <% if user_signed_in? %>
-      <header>
-        <p>
-          <%= link_to "Ezpense", root_path %> —
-          <%= link_to "Expenses", root_path %> —
-          <%= link_to "Filters", filters_path %>
-        </p>
-        <p>
-          <%= current_user.email %>
-          <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
-        </p>
-      </header>
-    <% end %>
+  <body class="bg-neutral-primary text-body">
 
-    <main>
-      <% flash.each do |type, msg| %>
-        <div role="<%= type == "alert" ? "alert" : "status" %>"><%= msg %></div>
-      <% end %>
-      <%= yield %>
+    <!-- ✅ NAVBAR -->
+    <header class="fixed w-full z-20 top-0 start-0">
+
+      <!-- Top Navbar -->
+      <nav class="bg-neutral-primary border-b border-default">
+        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+
+          <!-- Logo -->
+          <%= link_to root_path, class: "flex items-center space-x-3 rtl:space-x-reverse" do %>
+            <%= image_tag "Group 1.svg", class: "h-10", alt: "Ezpense Logo" %>
+          <% end %>
+
+          <!-- Right Side -->
+          <div class="flex items-center space-x-6 rtl:space-x-reverse">
+
+            <% if user_signed_in? %>
+              <span class="text-sm text-body">
+                <%= current_user.email %>
+              </span>
+
+              <%= button_to "Sign out",
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: "text-sm font-medium text-fg-brand hover:underline bg-transparent border-none p-0 cursor-pointer" %>
+            <% else %>
+              <%= link_to "Login",
+                  new_user_session_path,
+                  class: "text-sm font-medium text-fg-brand hover:underline" %>
+            <% end %>
+
+          </div>
+        </div>
+      </nav>
+
+      <!-- Secondary Navbar -->
+      <nav class="bg-neutral-secondary-soft border-b border-default">
+        <div class="max-w-screen-xl px-4 py-3 mx-auto">
+          <ul class="flex flex-row font-medium mt-0 gap-10 text-sm">
+
+            <% if user_signed_in? %>
+              <li>
+                <%= link_to "Expenses", root_path, class: "text-heading hover:underline px-1 py-1 hover:text-fg-brand" %>
+              </li>
+              <li>
+                <%= link_to "Filters", filters_path, class: "text-heading hover:underline px-1 py-1 hover:text-fg-brand" %>
+              </li>
+            <% end %>
+
+          </ul>
+        </div>
+      </nav>
+
+    </header>
+
+    <!-- ✅ MAIN CONTENT -->
+    <main class="pt-32">
+      <div class="max-w-screen-xl mx-auto px-4 pb-8">
+        <% flash.each do |type, msg| %>
+          <% next if msg.blank? %>
+          <% alert_classes = type.to_s == "alert" ? "text-fg-danger border-danger-subtle bg-danger-soft" : "text-fg-success-strong border-success-subtle bg-success-soft" %>
+          <div
+            class="flex items-center p-4 mb-4 text-sm rounded-base border <%= alert_classes %>"
+            role="<%= type.to_s == "alert" ? "alert" : "status" %>">
+            <span class="font-medium"><%= msg %></span>
+          </div>
+        <% end %>
+
+        <%= yield %>
+      </div>
     </main>
+
   </body>
 </html>

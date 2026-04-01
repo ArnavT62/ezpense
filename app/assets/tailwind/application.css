@@ -1,4 +1,52 @@
 @import "tailwindcss";
-@import "flowbite/src/themes/default";
+@import "flowbite/src/themes/mono";
 @plugin "flowbite/plugin";
 @source "../../../node_modules/flowbite";
+
+/* Mono uses Google Sans Code; use system monospace stack without a font CDN */
+@theme {
+  --font-sans: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-body: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Flowbite form snippets: primary-* → red */
+  --color-primary-50: var(--color-red-50);
+  --color-primary-100: var(--color-red-100);
+  --color-primary-200: var(--color-red-200);
+  --color-primary-300: var(--color-red-300);
+  --color-primary-400: var(--color-red-400);
+  --color-primary-500: var(--color-red-500);
+  --color-primary-600: var(--color-red-600);
+  --color-primary-700: var(--color-red-700);
+  --color-primary-800: var(--color-red-800);
+  --color-primary-900: var(--color-red-900);
+  --color-primary-950: var(--color-red-950);
+
+  /* Brand accent: indigo → red (light) */
+  --color-fg-brand-subtle: var(--color-red-200);
+  --color-fg-brand: var(--color-red-700);
+  --color-fg-brand-strong: var(--color-red-900);
+  --color-brand-softer: var(--color-red-50);
+  --color-brand-soft: var(--color-red-100);
+  --color-brand: var(--color-red-900);
+  --color-brand-medium: var(--color-red-200);
+  --color-brand-strong: var(--color-red-800);
+  --color-brand-subtle: var(--color-red-200);
+  --color-brand-light: var(--color-red-600);
+  --color-fg-purple: var(--color-red-600);
+  --color-purple: var(--color-red-500);
+}
+
+.dark {
+  --color-fg-brand-subtle: var(--color-red-200);
+  --color-fg-brand: var(--color-red-500);
+  --color-fg-brand-strong: var(--color-red-400);
+  --color-brand-softer: var(--color-red-950);
+  --color-brand-soft: var(--color-red-900);
+  --color-brand: var(--color-red-600);
+  --color-brand-medium: var(--color-red-900);
+  --color-brand-strong: var(--color-red-700);
+  --color-brand-subtle: var(--color-red-900);
+  --color-brand-light: var(--color-red-600);
+  --color-fg-purple: var(--color-red-500);
+  --color-purple: var(--color-red-500);
+}

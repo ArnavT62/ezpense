@@ -1,38 +1,86 @@
 <% content_for :title, "Filters" %>
 
-<h1>Filters</h1>
-<p><%= link_to "Back to expenses", root_path %></p>
+<% input_class = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+<% label_class = "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+<% submit_class = "inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800 cursor-pointer border-0" %>
 
-<h2>Add filter</h2>
-<%= form_with model: @filter, url: filters_path do |f| %>
-  <% if @filter.errors.any? %>
-    <div role="alert">
-      <ul>
-        <% @filter.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+<div class="space-y-8">
+  <div class="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+    <h1 class="text-4xl font-bold tracking-tight text-heading md:text-5xl lg:text-3xl">Filters</h1>
+    <%= link_to "Back to expenses", root_path, class: "text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none shrink-0 text-center" %>
+  </div>
+
+  <section class="w-full max-w-2xl rounded-lg shadow-sm">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="text-xl pb-4 font-semibold text-heading">Add filter</h2>
+
+      <%= form_with model: @filter, url: filters_path, class: "space-y-6" do |f| %>
+        <% if @filter.errors.any? %>
+          <div
+            class="p-4 mb-2 text-sm rounded-lg border text-fg-danger border-danger-subtle bg-danger-soft"
+            role="alert">
+            <h3 class="font-semibold mb-2 text-heading">Please fix the following:</h3>
+            <ul class="list-disc list-inside space-y-1 text-body">
+              <% @filter.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <p>
-    <%= f.label :name %>
-    <%= f.text_field :name, placeholder: "e.g. Food, Shopping", required: true, autocomplete: "off" %>
-    <%= f.submit "Add filter" %>
-  </p>
-<% end %>
 
-<h2>Your filters</h2>
-<% if @filters.any? %>
-  <ul>
-    <% @filters.each do |filter| %>
-      <li>
-        <%= filter.name %>
-        <%= link_to "Rename", edit_filter_path(filter) %>
-        <%= button_to "Delete", filter_path(filter), method: :delete,
-              form: { data: { turbo_confirm: "Delete this filter? Expenses using it become uncategorized." } } %>
-      </li>
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+          <div class="sm:col-span-2">
+            <%= f.label :name, class: label_class %>
+            <%= f.text_field :name, placeholder: "e.g. Food, Shopping", required: true, autocomplete: "off", class: input_class %>
+          </div>
+        </div>
+
+        <div>
+          <%= f.submit "Add filter", class: submit_class, class: "text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full sm:w-auto justify-center cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-xl font-semibold text-heading">Your filters</h2>
+
+    <% if @filters.any? %>
+      <div class="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+        <table class="w-full text-sm text-left rtl:text-right text-body">
+          <thead class="text-sm text-body bg-neutral-secondary-medium border-b border-default-medium">
+            <tr>
+              <th class="px-6 py-3 font-medium">Name</th>
+              <th class="px-6 py-3 font-medium text-right">
+                <span class="sr-only">Actions</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @filters.each do |filter| %>
+              <tr class="bg-neutral-primary-soft border-b border-default hover:bg-neutral-secondary-medium">
+                <td class="px-6 py-4 font-medium text-heading">
+                  <%= filter.name %>
+                </td>
+                <td class="px-6 py-4 text-right">
+                <div class="flex flex-col items-end">
+                  <%= link_to "Rename", edit_filter_path(filter),
+                  class: "font-medium text-green-500 text-fg-brand hover:underline"  %>
+              
+                  <%= button_to "Delete", filter_path(filter), method: :delete,
+                      form: { data: { turbo_confirm: "Delete this filter? Expenses using it become uncategorized." } },
+                      class: "font-medium text-red-500 hover:underline bg-transparent border-none cursor-pointer" %>
+                </div>
+              </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="text-body">
+        No filters yet. Add one above to tag expenses.
+      </p>
     <% end %>
-  </ul>
-<% else %>
-  <p>No filters yet. Add one above to tag expenses.</p>
-<% end %>
+  </section>
+</div>

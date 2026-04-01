@@ -9,6 +9,12 @@
 #     priority: 2
 #     schedule: at 5am every day
 
+# Requires Solid Queue supervisor (`bin/jobs`) running in this environment.
+development:
+  send_monthly_expense_reports:
+    class: SendMonthlyExpenseReportsJob
+    schedule: "0 6 1 * *"
+
 production:
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"

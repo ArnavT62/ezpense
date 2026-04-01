@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <title><%= content_for(:title) || "Ezpense" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Ezpense">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js" defer></script>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen flex flex-col items-center justify-center bg-neutral-primary text-body p-4">
+    <div class="w-full max-w-2xl mx-auto mb-4">
+      <% flash.each do |type, msg| %>
+        <% next if msg.blank? %>
+        <% alert_classes = type.to_s == "alert" ? "text-fg-danger border-danger-subtle bg-danger-soft" : "text-fg-success-strong border-success-subtle bg-success-soft" %>
+        <div
+          class="flex items-center p-4 mb-4 text-sm rounded-lg border <%= alert_classes %>"
+          role="<%= type.to_s == "alert" ? "alert" : "status" %>">
+          <span class="font-medium"><%= msg %></span>
+        </div>
+      <% end %>
+    </div>
+
+    <%= yield %>
+  </body>
+</html>

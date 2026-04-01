@@ -54,7 +54,7 @@ class ExpensesController < ApplicationController
   def mail_month_to_date
     MonthlyReportMailer.month_to_date_summary(current_user, @year, @month).deliver_later
     redirect_to expenses_path(year: @year, month: @month),
-      notice: "Report for #{Date::MONTHNAMES[@month]} #{@year} (through #{Time.zone.today.strftime('%d %b %Y')}) is on its way to your inbox."
+      notice: "Report for #{Date::MONTHNAMES[@month]} #{@year} is on its way to your inbox."
   end
 
   private
@@ -78,9 +78,16 @@ class ExpensesController < ApplicationController
 
   def parse_month_param
     m = params[:month].presence&.to_i
-    return Time.zone.today.month if m.nil? || m < 1 || m > 12
+    m = Time.zone.today.month if m.nil? || m < 1 || m > 12
+    [m, max_month_for_year(@year)].min
+  end
 
-    m
+  def max_month_for_year(year)
+    today = Time.zone.today
+    return 12 if year < today.year
+    return today.month if year == today.year
+
+    1
   end
 
   def expense_params

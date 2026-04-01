@@ -1,0 +1,44 @@
+<% content_for :title, "Sign up — Ezpense" %>
+
+<% input_class = "border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" %>
+<% label_class = "block mb-2 text-sm font-medium text-gray-900 dark:text-white" %>
+<% submit_class = "text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none w-full sm:w-auto justify-center cursor-pointer" %>
+
+<%= image_tag "Group 1.svg", class: "h-10 mb-6", alt: "Ezpense logo" %>
+<section class="w-full max-w-2xl rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+  <div class="py-8 px-4 mx-auto max-w-md lg:py-12">
+    <h2 class="mb-6 text-xl font-bold text-gray-900 dark:text-white text-center">Create your account</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "space-y-6" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="grid gap-4">
+        <div class="sm:col-span-2">
+          <%= f.label :email, class: label_class %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: input_class, placeholder: "name@company.com" %>
+        </div>
+
+        <div class="sm:col-span-2">
+          <%= f.label :password, class: label_class %>
+          <% if @minimum_password_length %>
+            <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">(<%= @minimum_password_length %> characters minimum)</p>
+          <% end %>
+          <%= f.password_field :password, autocomplete: "new-password", class: input_class, placeholder: "••••••••" %>
+        </div>
+
+        <div class="sm:col-span-2">
+          <%= f.label :password_confirmation, class: label_class %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: input_class, placeholder: "••••••••" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.submit "Sign up", class: submit_class %>
+      </div>
+    <% end %>
+
+    <div class="mt-6 text-sm">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</section>
